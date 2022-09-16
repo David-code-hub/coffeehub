@@ -1,0 +1,271 @@
+<html>
+  <head>
+    {% load static %}
+    <title>Coffee Hub</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <link rel="shortcut icon" href="{% static 'img/cofee.png' %}">
+    <!-- currently bootstrap is only used for header - for demo purposes only -->
+
+    <!-- Compiled and minified CSS -->
+
+	<!-- Google Materalize fonts -->
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.css" rel="stylesheet" />
+	<link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/animate.css@3.5.1" rel="stylesheet" type="text/css">
+  <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/animate.css@3.5.1" rel="stylesheet" type="text/css">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+  <style>
+    body{
+      font-family: Roboto,sans-serif;
+    }
+  </style>
+  </head>
+  <body>
+  
+  	<div id="auth">
+  	<v-app>
+
+  		<v-col md="4" sm="12" class="justify-center mx-auto mt-8 fill-height"  align-content="center">
+  		<v-card elevation="0" style="box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px!important;" class="rounded-lg">
+        <div style="height:170px;background:url('{%static 'img/coffback.jpg' %}') rgba(0,0,0,0.5);
+        background-blend-mode:multiply;background-size:cover;text-align:center;padding:1em;">
+        <v-avatar class="mb-4" size="100">
+           <v-img lazy-src="/static/img/cofee.png" src="{% static 'img/cofee.png' %}" ></v-img>
+        </v-avatar>
+      </div>
+        <center>
+
+        
+      </center>
+  			<v-card-text>
+  				
+  				<template>
+            <v-row class="mx-auto center" v-show="select">
+              <v-col cols="5" class="text-center">
+                <v-avatar class="mb-4" size="70">
+                   <v-img  lazy-src="/static/img/cofee.png" src="/static/img/avatar2.png" ></v-img>
+                </v-avatar>
+              <v-btn color="primary" large depressed v-on:click="signupC">Customer</v-btn>
+              </v-col>
+              <v-col cols="2" class="text-center">
+              <p><b>OR</b></p>
+            </v-col>
+            <v-col cols="5" class="text-center">
+              <v-avatar class="mb-4" size="70">
+                 <v-img  lazy-src="/static/img/cofee.png" src="/static/img/avatar6.png" size="100"></v-img>
+              </v-avatar>
+               <v-btn color="brown darken-1" depressed large class="white--text" v-on:click="signupB">Barista</v-btn> 
+             </v-col>
+            </v-row>
+
+              <form method="post" action="" autocomplete="off" v-show="login">
+                {% csrf_token %}
+              	<v-card-title>Login to continue 🙂☕</v-card-title>
+              	<br>
+                <v-text-field outlined label="Username" prepend-icon="mdi-account-outline" v-model="username" name="username" required type="text"></v-text-field>
+                <v-text-field outlined label="Password" prepend-icon="mdi-key-outline" v-model="password" name="password" required type="password"></v-text-field>
+             
+                <v-btn class="mr-4 col" outlined color="brown" @click="userlogin" :loading="loading" :disabled="loading"> Submit</v-btn>
+                <p class="mt-3">Don't have an account? <v-btn color="primary" depressed v-on:click="selectF" small>Create Account</v-btn></p>
+              </form>
+
+              <form method="post" action="" autocomplete="off" v-show="signupb"><!-- {% csrf_token %} -->
+                <v-card-title>Create Barista Account 🤎☕</v-card-title>
+                <br>
+               
+                 <v-file-input
+                    :rules="rules"
+                    accept="image/png, image/jpeg, image/bmp"
+                    placeholder="Pick an avatar"
+                    prepend-icon="mdi-camera"
+                    outlined
+                    label="Avatar"
+                    id="profile_image"
+                    v-model="profile_image"
+                    required
+                  ></v-file-input>
+                <v-text-field outlined  prepend-icon="mdi-account-outline"  label="Username" id="id_username" v-model="username" name="username" required type="email"></v-text-field>
+                <v-text-field outlined label="Password" prepend-icon="mdi-key-outline"  id="id_password" v-model="password" name="password" required type="password"></v-text-field>
+
+                <v-btn class="mr-4 col" outlined color="brown" :loading="loading" :disabled="loading"  @click="signupbarista"> Submit</v-btn>
+                <p class="mt-3">Already have an account? <v-btn color="primary" depressed @click="loginF" small>Login</span></p>
+              </form>
+
+              <form method="post" action="" autocomplete="off" v-show="signupc"><!-- {% csrf_token %} -->
+                <v-card-title>Create Customer Account 🤎☕</v-card-title>
+                <br>
+                <v-file-input
+                    :rules="rules"
+                    accept="image/png, image/jpeg, image/bmp"
+                    placeholder="Pick an avatar"
+                    prepend-icon="mdi-camera"
+                    outlined
+                    label="Avatar"
+                    id="profile"
+                    v-model="profile_image"
+                    required
+                  ></v-file-input>
+                <v-text-field outlined  prepend-icon="mdi-account-outline"  label="Username" id="id_username" v-model="username" name="username" required type="email"></v-text-field>
+                <v-text-field outlined label="Password" prepend-icon="mdi-key-outline"  id="id_password" v-model="password" name="password" required type="password"></v-text-field>
+
+                <v-btn class="mr-4 col" outlined color="brown" :loading="loading" :disabled="loading"  @click="signupcustomer"> Submit</v-btn>
+                <p class="mt-3">Already have an account? <v-btn color="primary" depressed @click="loginF" small>Login</span></p>
+              </form>
+
+            </template>
+
+  			</v-card-text>
+  		</v-card>
+  		</v-col>
+        <v-snackbar
+    shaped
+    color="error"
+    
+            v-model="snackbar"
+          >
+            [[snackbartext]]
+
+            <template v-slot:action="{ attrs }">
+              <v-btn
+                color="white"
+
+                text
+                v-bind="attrs"
+                @click="snackbar = false"
+              >
+                Close
+              </v-btn>
+            </template>
+          </v-snackbar>
+  	</v-app>
+  </div>
+  	</body>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script>
+      var audio = new Audio('/static/audio/new_order.wav');
+      var csrftoken = "{{ csrf_token }}";
+      var domain = 'http://coffeehub21.herokuapp.com'
+      // var domain = "http://127.0.0.1:8000";
+      // console.log = function () {};
+      var header_info = {'X-CSRFTOKEN': csrftoken, 'Content-Type': 'application/json'};
+
+  </script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+  <script src="https://unpkg.com/vue-router@2.0.0"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+    <script src="{% static 'js/order.js' %}"></script>
+   <script src="{% static 'js/baristas.js' %}"></script>
+   <script src="{% static 'js/reviews.js' %}"></script>
+   <script src="{% static 'js/profile.js' %}"></script>
+  <script src="{% static 'js/main.js' %}"></script>
+  <script>
+    Vue.mixin({ delimiters: ['[[',']]'] });
+  	new Vue({
+		  vuetify: new Vuetify(),
+		  el: '#auth',
+		  data() {
+		  	return{
+          loading:false,
+          username:'',
+          password:'',
+          profile_image:'',
+          login:true,
+          signup:false,
+          select:false,
+          signupc:false,
+          signupb:false,
+          snackbar:false,
+          snackbartext:'',
+          rules: [
+            value => !value || value.size < 2000000 || 'Avatar size should be less than 2 MB!',
+          ],
+
+		  	}
+		  	
+		  },
+      methods: {
+       
+        loginF(){
+          this.signupb = false
+          this.signupc = false
+          this.select = false
+          this.login = true
+        },
+        signupC(){
+          this.signupc = true
+          this.select = false
+          this.login = false
+        },
+        signupB(){
+          this.signupb = true
+          this.signupc = false
+          this.select = false
+          this.login = false
+        },
+      selectF(){
+          this.select = true
+          this.login = false
+        },
+
+        userlogin(){
+        this.loading = true
+        axios({ method : "POST", url: domain +'/login/', headers: header_info, data : { "username":this.username,"password":this.password, },})
+        .then(response => {this.loading = false;window.location.href = domain + '/#/reviews'
+}).catch(err => { console.log(err);this.snackbartext = err.response.data['err'];this.loading = false;this.snackbar=true});
+        },
+
+
+
+            signupbarista(event){
+            this.loading = true
+            var imagefile = document.querySelector('#profile_image')
+            const img_data = imagefile.files[0] 
+            const fd = new FormData()
+            fd.append('profile_image', img_data)
+            fd.append('password', this.password)
+            fd.append('username', this.username)  
+            axios.post(domain + '/signupbarista/', fd, { headers: {'X-CSRFTOKEN': '{{csrf_token}}', 'Content-Type': 'multipart/form-data' } })
+            .then(response => {   
+                this.loading = false
+                
+                window.location.href = domain + '/#/orders'
+              }).catch(err => {
+                      this.loading = false
+                      this.snackbar = true
+                      this.snackbartext = err.response.data['err']
+                  });
+              },
+
+            signupcustomer(event){
+            this.loading = true
+            var imagefile = document.querySelector('#profile')
+            const img_data = imagefile.files[0] 
+            const fd = new FormData()
+            fd.append('profile', img_data)
+            fd.append('password', this.password)
+            fd.append('username', this.username)  
+            axios.post(domain + '/signupcustomer/', fd, { headers: {'X-CSRFTOKEN': '{{csrf_token}}', 'Content-Type': 'multipart/form-data' } })
+            .then(response => {   
+                this.loading = false
+                
+                window.location.href = domain + '/#/order'
+              }).catch(err => {
+                      this.loading = false
+                      this.snackbar = true
+                      this.snackbartext = err.response.data['err']
+                  });
+              },
+
+      }
+	})
+  </script>
+  
+</html>
