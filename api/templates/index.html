@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+{% load static %}
+<head>
+	<title>Coffee Hub</title>
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <link rel="shortcut icon" href="{% static 'img/cofee.png' %}">
+    <!-- currently bootstrap is only used for header - for demo purposes only -->
+
+    <!-- Compiled and minified CSS -->
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.css" rel="stylesheet" />
+	<link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+	  <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
+	  <link href="https://cdn.jsdelivr.net/npm/animate.css@3.5.1" rel="stylesheet" type="text/css">
+	  <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+	  <link href="https://cdn.jsdelivr.net/npm/animate.css@3.5.1" rel="stylesheet" type="text/css">
+
+	  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+	  <style>
+	    body{
+	      font-family: Roboto,sans-serif;
+	    }
+	    .v-label {
+    		font-size: 13px;
+    		color:#795549!important;
+    	}
+      .show-mobile{
+          display:none;
+        }
+        .hide-mobile{
+          display:block!important;
+        }
+	    @media(max-width:768px){
+        .coffee-card{
+          margin:auto;
+        }
+        .show-mobile{
+          display:block!important;
+        }
+        .hide-mobile{
+          display:none!important;
+        }
+	    .special-col{
+	    	max-width:50%!important;
+	    	}
+		}
+
+      .done-button:focus { outline: 0; }
+
+
+      .done-button:active {
+        transform: scale(0.9);
+        background-color: #e60074;
+        box-shadow: 0 2px 25px rgba(255, 0, 130, 0.2);
+      }
+
+      .pinktext{
+        color: #e91e63!important;
+        caret-color: #e91e63!important;  
+            }
+	  </style>
+<body>
+
+<div id="app">
+
+	 <v-app id="inspire">
+	 	  <v-card
+    flat
+    tile
+    elevation="0"
+    color="brown"
+  >
+    <v-toolbar dense height="54" elevation="0" color="brown">
+
+      <v-toolbar-title class="white--text">Coffeehub</v-toolbar-title>
+
+      <v-spacer></v-spacer>
+
+     
+
+      <v-btn color="brown" depressed link href="{% url 'logout_new' %}">
+        <v-icon class="white--text">mdi-power</v-icon>
+      </v-btn>
+    </v-toolbar>
+  </v-card>
+
+		 	<v-container>
+				 <transition ><!--name="fade" mode="out-in" leave-active-class="animated bounceOutRight" :duration="500"-->
+					<router-view/>
+				</transition>
+
+			</v-container>
+	 		<template>
+	 			 <v-bottom-navigation
+	 			 class="mt-10"
+    :value="value"
+    color="brown"
+    horizontal
+    fixed
+
+  >
+    <v-btn link href="#reviews">
+      <span>Reviews</span>
+
+      <v-icon>mdi-comment-account-outline</v-icon>
+    </v-btn>
+    {% if customer %}
+    <v-btn link href="#order">
+      <span>Order</span>
+
+      <v-icon>mdi-coffee-outline</v-icon>
+    </v-btn>
+    {% endif %}
+
+
+    {% if barista %}
+    <v-btn link href="#orders">
+      <span>Manage Orders</span>
+
+      <v-icon>mdi-coffee-outline</v-icon>
+    </v-btn>
+    {% endif %}
+    {% if customer %}
+    <v-btn link href="#profile">
+      <span>Profile</span>
+
+      <v-icon>mdi-account-outline</v-icon>
+    </v-btn>
+    {% endif %}
+
+  </v-bottom-navigation>
+
+				</template>
+	 </v-app>
+</div>
+
+
+
+
+
+</body>
+<script>
+      var audio = new Audio('/static/audio/new_order.wav');
+      var csrftoken = "{{ csrf_token }}";
+      var domain = 'http://coffeehub21.herokuapp.com'
+      // var domain = "http://127.0.0.1:8000";
+      console.log = function () {};
+      var header_info = {'X-CSRFTOKEN': csrftoken, 'Content-Type': 'application/json'};
+      var username = '{{user.username}}'
+  </script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/timeago@1.6.7/jquery.timeago.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+
+  <script src="https://unpkg.com/vue-router@2.0.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/timeago.js@latest/dist/timeago.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+   <script src="{% static 'js/order.js' %}"></script>
+   <script src="{% static 'js/baristas.js' %}"></script>
+   <script src="{% static 'js/reviews.js' %}"></script>
+   <script src="{% static 'js/profile.js' %}"></script>
+  <script src="{% static 'js/main.js' %}"></script>
+
+
+</html>
