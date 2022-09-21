@@ -23,7 +23,7 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '*821%pr#seq!x$*w&r69g&xp7nn3&+fr^nj!tv4up!5&-n38z$'
+SECRET_KEY = '******'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
